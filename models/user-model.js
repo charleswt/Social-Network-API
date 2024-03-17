@@ -9,26 +9,26 @@ const userSchema = new Schema(
             trim: true 
         },
         email: {
-            stype: String,
+            type: String,
             required: true,
             unique: true,
-            Validate: /^\S+@\S+\.\S+$/
+            validate: /^\S+@\S+\.\S+$/
         },
-        thoughts: {
-            type: mongoose.Schema.Types.ObjectId,
+        thoughts: [{
+            type: Schema.Types.ObjectId,
             ref: 'Thought'
-        },
-        friends: {
-            type: mongoose.Schema.Types.ObjectId,
+        }],
+        friends: [{
+            type: Schema.Types.ObjectId,
             ref: 'User'
-        }
+        }]
     }
-)
+);
 
 userSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;

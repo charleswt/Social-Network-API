@@ -1,4 +1,4 @@
-usernameData = [
+const usernameData = [
     'Emily',
     'Benjamin',
     'Sophia',
@@ -11,7 +11,7 @@ usernameData = [
     'William'
 ]
 
-thoughtsData = [
+const thoughtsData = [
     "Feeling grateful for the little moments that bring joy to my day. #Gratitude",
     "Just finished a great book! Highly recommend it to anyone looking for a good read. #Bookworm",
     "Today's sunset was absolutely breathtaking! Nature never ceases to amaze me. #NatureLover",
@@ -24,7 +24,7 @@ thoughtsData = [
     "Just booked tickets for a spontaneous road trip! Adventure awaits! #RoadTripReady"
 ]
 
-reactionData = [
+const reactionData = [
     "Sounds like a wonderful moment!",
     "Great recommendation!",
     "Nature's beauty is truly remarkable.",
@@ -37,3 +37,4 @@ reactionData = [
     "Enjoy the adventure!",
 ]
 
+module.exports = { reactionData, thoughtsData, usernameData };

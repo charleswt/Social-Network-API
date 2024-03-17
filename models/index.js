@@ -1,4 +1,4 @@
 const Thought = require('./thoughts-model');
-const Course = require('./user=model');
+const User = require('./user-model');
 
-module.exports = { Thought, Course };
+module.exports = { Thought, User };

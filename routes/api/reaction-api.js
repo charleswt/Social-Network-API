@@ -3,6 +3,6 @@ const { createReaction, deleteReaction } = require('../../controllers/reaction-c
 
 router.route('/createReaction').post(createReaction)
 
-router.route('/deletReaction').delete(deleteReaction)
+router.route('/deletReaction/:thoughtId/:reactionId').delete(deleteReaction)
 
 module.exports = router

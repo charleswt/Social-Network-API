@@ -1,4 +1,0 @@
-get route for all users and thoughts
-create, update, and delete users and thoughts in my database
-and find user and thoughts by id
-create and delete reaction

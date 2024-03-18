@@ -3,12 +3,12 @@ const { getUser, getOneUser, createUser, updateUser, deleteUser } = require('../
 
 router.route('/').get(getUser)
 
-router.route('/oneUser').get(getOneUser)
+router.route('/oneUser/:username').get(getOneUser)
 
 router.route('/createUser').post(createUser)
 
-router.route('/editUser').put(updateUser)
+router.route('/editUser/:username').put(updateUser)
 
-router.route('/deleteUser').delete(deleteUser)
+router.route('/deleteUser/:username').delete(deleteUser)
 
 module.exports = router; 

@@ -3,12 +3,12 @@ const { getThought, getOneThought, createThought, updateThought, deleteThought }
 
 router.route('/').get(getThought)
 
-router.route('/oneThought').get(getOneThought)
+router.route('/oneThought/:_id').get(getOneThought)
 
 router.route('/createThought').post(createThought)
 
-router.route('/editThought').put(updateThought)
+router.route('/editThought/:_id').put(updateThought)
 
-router.route('/deleteThought').delete(deleteThought)
+router.route('/deleteThought/:_id').delete(deleteThought)
 
 module.exports = router; 

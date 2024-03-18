@@ -1,8 +1,8 @@
 const router = require('express').Router()
-const oijvois = require('../../reaction-controller');
+const { createReaction, deleteReaction } = require('../../controllers/reaction-controller');
 
-router.route('/createReaction').post()
+router.route('/createReaction').post(createReaction)
 
-router.route('/deletReaction/:id').delete()
+router.route('/deletReaction').delete(deleteReaction)
 
 module.exports = router

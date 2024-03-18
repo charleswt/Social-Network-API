@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const jvknsv = require('../../user-controller');
+const { getUser, createUser, updateUser, deleteUser } = require('../../controllers/user-controller');
 
-router.route('/').get()
+router.route('/').get(getUser)
 
-router.route('/createUser').post()
+router.route('/createUser').post(createUser)
 
-router.route('/editUser/:id').put()
+router.route('/editUser').put(updateUser)
 
-router.route('/deleteUser/:id').delete()
+router.route('/deleteUser').delete(deleteUser)
 
 module.exports = router; 

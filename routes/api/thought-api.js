@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const jvknsv = require('../../thought-controller');
+const { getThought, createThought, updateThought, deleteThought } = require('../../controllers/thought-controller');
 
-router.route('/').get()
+router.route('/').get(getThought)
 
-router.route('/createThought').post()
+router.route('/createThought').post(createThought)
 
-router.route('/editThought/:id').put()
+router.route('/editThought').put(updateThought)
 
-router.route('/deleteThought/:id').delete()
+router.route('/deleteThought').delete(deleteThought)
 
 module.exports = router; 

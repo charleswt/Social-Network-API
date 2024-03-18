@@ -1,54 +1,78 @@
-const { User } = require('../models')
+const { User } = require('../models');
+
 module.exports = {
     async getUser(res) {
-        try{
-            const user = await User.find();
+        try {
+            const users = await User.find();
 
-            if(!user.length){
-                return res.status(404).json({ message: 'No results! Make sure to run seed!' })
+            if (!users.length) {
+                return res.status(404).json({ message: 'No results! Make sure to run seed!' });
             }
-            res.status(200).json(user)
-        }catch(err){
-            res.status(404).json(err)
-        }},
+            res.status(200).json(users);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+    async getOneUser(req, res) {
+        try {
+            const user = await User.findOne({ username: req.params.username });
+
+            if (!user) {
+                return res.status(404).json({ message: 'No results! User does not exist!' });
+            }
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
     
     async createUser(req, res) {
-        try{
-            const user = User.create({ username: req.body, email: req.body+'@gmail.com'})
-
-            if(!req.body){
-                return res.status(404).json({ message: 'Please input username to create user!' })
+        try {
+            if (!req.body.username) {
+                return res.status(400).json({ message: 'Please input username to create user!' });
             }
-            res.status(200).json(user)
-        }catch(err){
-            res.status(404).json(err)
+
+            const user = await User.create({
+                username: req.body.username,
+                email: req.body.username + '@gmail.com'
+            });
+
+            res.status(201).json(user);
+        } catch (err) {
+            res.status(500).json(err);
         }
     },
 
     async updateUser(req, res) {
-        try{
-            const user = User.findOneAndUpdate({ _id: req.body.username }, { $set: req.body }, 
-                { runValidators: true, new: true })
+        try {
+            const user = await User.findOneAndUpdate(
+                { username: req.body.username },
+                { $set: req.body }, 
+                { runValidators: true, new: true }
+            );
 
-                if(!user){
-                    return res.status(404).json({ message: 'User does not exist! Could not update user!'})
-                }
-            res.status(200).json(user)
-        }catch(err){
-            res.status(404).json(err)
+            if (!user) {
+                return res.status(404).json({ message: 'User does not exist! Could not update user!' });
+            }
+
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
         }
     },
     
     async deleteUser(req, res) {
-        try{
-            const user = User.findOneAndDelete({ _id: req.body.username })
+        try {
+            const user = await User.findOneAndDelete({ username: req.body.username });
 
-            if(!user){
-                return res.status(404).json({ message: 'User does not exist! Could not delete user!'})
+            if (!user) {
+                return res.status(404).json({ message: 'User does not exist! Could not delete user!' });
             }
-            res.status(200).json(user)
-        }catch(err){
-            res.status(404).json(err)
+
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
         }
     }
-    }
+};

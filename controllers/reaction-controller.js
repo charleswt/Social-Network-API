@@ -1,8 +1,8 @@
 
 module.exports = {
-async createReaction() {},
+async createReaction(req, res) {},
 
-async deleteReaction() {
+async deleteReaction(req, res) {
     try{
 
     }catch(err){

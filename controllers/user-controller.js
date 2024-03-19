@@ -74,5 +74,69 @@ module.exports = {
         } catch (err) {
             res.status(500).json(err);
         }
+    },
+
+    async addFriend(req, res) {
+        try {
+            const { friendUser } = req.params;
+            const username = req.body.username;
+
+            if (!username) {
+                return res.status(400).json({ message: 'Enter your username.' });
+            }
+
+            const user = await User.findOne({ username });
+
+            if (!user) {
+                return res.status(404).json({ message: 'User does not exist! Try again!' });
+            }
+
+            const friend = await User.findOne({ username: friendUser });
+
+            if (!friend) {
+                return res.status(404).json({ message: 'Friend does not exist! Try again!' });
+            }
+
+            if (user.friends.includes(friendUser)) {
+                return res.status(400).json({ message: 'You are already friends with this user!' });
+            }
+
+            user.friends.push(friendUser);
+            await user.save();
+
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+    async deleteFriend(req, res) {
+        try {
+            const { friendUser } = req.params;
+            const username = req.body.username;
+
+            if (!username) {
+                return res.status(400).json({ message: 'Enter your username.' });
+            }
+
+            const user = await User.findOne({ username });
+
+            if (!user) {
+                return res.status(404).json({ message: 'User does not exist! Try again!' });
+            }
+
+            const friendIndex = user.friends.indexOf(friendUser);
+
+            if (friendIndex === -1) {
+                return res.status(404).json({ message: 'Friend not found!' });
+            }
+
+            user.friends.splice(friendIndex, 1);
+            await user.save();
+
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
     }
 };

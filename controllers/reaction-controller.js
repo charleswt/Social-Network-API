@@ -43,8 +43,6 @@ module.exports = {
 
             const reactionIndex = thought.reactions.findIndex(
                 reaction => reaction.reactionId.toString() === reactionId);
-                console.log(thought.reactions.reactionId)
-            console.log(reactionId)
             if (reactionIndex === -1) {
                 return res.status(404).json({ message: 'Reaction not found!' });
             }

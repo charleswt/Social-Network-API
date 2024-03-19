@@ -1,9 +1,16 @@
-const { Thought } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
     async createReaction(req, res) {
         try {
-            const thought = await Thought.findById(req.params.thoughtId);
+            const { username } = req.params;
+            const validUsername = await User.findOne({ username })
+
+            if(!validUsername){
+                return res.status(404).json({ message: "Please enter existing username"})
+            }
+            
+            const thought = await Thought.findById(req.body.thoughtId);
 
             if (!thought) {
                 return res.status(404).json({ message: 'Thought not found!' });
@@ -11,7 +18,7 @@ module.exports = {
 
             thought.reactions.push({
                 reactionBody: req.body.reactionBody,
-                username: req.body.username
+                username: username
             });
 
             await thought.save();
@@ -26,14 +33,18 @@ module.exports = {
         try {
             const { thoughtId, reactionId } = req.params;
 
-            const thought = await Thought.findById(thoughtId);
+            console.log({ thoughtId, reactionId })
 
+            const thought = await Thought.findById(thoughtId);
+            console.log(thought)
             if (!thought) {
                 return res.status(404).json({ message: 'Thought not found!' });
             }
 
-            const reactionIndex = thought.reactions.findIndex(reaction => reaction.reactionId.toString() === reactionId);
-
+            const reactionIndex = thought.reactions.findIndex(
+                reaction => reaction.reactionId.toString() === reactionId);
+                console.log(thought.reactions.reactionId)
+            console.log(reactionId)
             if (reactionIndex === -1) {
                 return res.status(404).json({ message: 'Reaction not found!' });
             }

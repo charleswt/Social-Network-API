@@ -29,7 +29,8 @@ module.exports = {
 
     async createThought(req, res) {
         try {
-            const validUsername = await User.findOne({ username: req.params.username });
+            const { username } = req.params;
+            const validUsername = await User.findOne({ username });
 
             if (!validUsername) {
                 return res.status(404).json({ message: 'Please input an existing username' });
@@ -37,13 +38,12 @@ module.exports = {
 
             const thought = await Thought.create({
                 thoughtText: req.body.thoughtText,
-                username: req.body.username
+                username: username
             });
 
-            if (!req.body.thoughtText || !req.body.username) {
+            if (!{ thoughtText: req.body.thoughtText,  username: username}) {
                 return res.status(400).json({ message: 'Please input string for thoughtText and an existing username!' });
             }
-            consoel.log(thought)
             
             validUsername.thoughts.push(thought._id)
 
@@ -51,6 +51,7 @@ module.exports = {
 
             res.status(201).json(thought);
         } catch (err) {
+            console.log(err)
             res.status(500).json(err);
         }
     },

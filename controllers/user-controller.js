@@ -1,11 +1,10 @@
 const { User } = require('../models');
-
+const mongoose = require('mongoose');
 module.exports = {
-    async getUser(res) {
+    async getUser(req, res) {
         try {
             const users = await User.find();
-
-            if (!users.length) {
+            if (!users) {
                 return res.status(404).json({ message: 'No results! Make sure to run seed!' });
             }
             res.status(200).json(users);
@@ -80,36 +79,36 @@ module.exports = {
         try {
             const { friendUser } = req.params;
             const username = req.body.username;
-
+    
             if (!username) {
                 return res.status(400).json({ message: 'Enter your username.' });
             }
-
+    
             const user = await User.findOne({ username });
-
+    
             if (!user) {
                 return res.status(404).json({ message: 'User does not exist! Try again!' });
             }
-
+    
             const friend = await User.findOne({ username: friendUser });
-
+    
             if (!friend) {
                 return res.status(404).json({ message: 'Friend does not exist! Try again!' });
             }
-
-            if (user.friends.includes(friendUser)) {
+    
+            if (user.friends.includes(friend._id)) {
                 return res.status(400).json({ message: 'You are already friends with this user!' });
             }
 
-            user.friends.push(friendUser);
+            user.friends.push(friend._id);
             await user.save();
-
+    
             res.status(200).json(user);
         } catch (err) {
             res.status(500).json(err);
         }
     },
-
+    
     async deleteFriend(req, res) {
         try {
             const { friendUser } = req.params;
@@ -118,6 +117,11 @@ module.exports = {
             if (!username) {
                 return res.status(400).json({ message: 'Enter your username.' });
             }
+            const friend = await User.findOne({ username: friendUser });
+    
+            if (!friend) {
+                return res.status(404).json({ message: 'Friend does not exist! Try again!' });
+            }
 
             const user = await User.findOne({ username });
 
@@ -125,7 +129,7 @@ module.exports = {
                 return res.status(404).json({ message: 'User does not exist! Try again!' });
             }
 
-            const friendIndex = user.friends.indexOf(friendUser);
+            const friendIndex = user.friends.indexOf(friend._id);
 
             if (friendIndex === -1) {
                 return res.status(404).json({ message: 'Friend not found!' });

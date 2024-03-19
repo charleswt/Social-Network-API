@@ -1,7 +1,7 @@
 const { Thought, User } = require('../models');
 
 module.exports = {
-    async getThought(res) {
+    async getThought(req, res) {
         try {
             const thought = await Thought.find();
 
@@ -29,7 +29,7 @@ module.exports = {
 
     async createThought(req, res) {
         try {
-            const validUsername = await User.findOne({ username: req.body.username });
+            const validUsername = await User.findOne({ username: req.params.username });
 
             if (!validUsername) {
                 return res.status(404).json({ message: 'Please input an existing username' });
@@ -43,6 +43,11 @@ module.exports = {
             if (!req.body.thoughtText || !req.body.username) {
                 return res.status(400).json({ message: 'Please input string for thoughtText and an existing username!' });
             }
+            consoel.log(thought)
+            
+            validUsername.thoughts.push(thought._id)
+
+            await validUsername.save()
 
             res.status(201).json(thought);
         } catch (err) {

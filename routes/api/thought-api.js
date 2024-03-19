@@ -5,7 +5,7 @@ router.route('/').get(getThought)
 
 router.route('/oneThought/:_id').get(getOneThought)
 
-router.route('/createThought').post(createThought)
+router.route('/createThought/:username').post(createThought)
 
 router.route('/editThought/:_id').put(updateThought)
 
